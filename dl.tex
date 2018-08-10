@@ -394,6 +394,8 @@ The following processor-specific program property types
      \texttt{GNU_PROPERTY_X86_ISA_1_USED} & \texttt{0xc0000000} \\
      \texttt{GNU_PROPERTY_X86_ISA_1_NEEDED} & \texttt{0xc0000001} \\
      \texttt{GNU_PROPERTY_X86_FEATURE_1_AND} & \texttt{0xc0000002} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_USED} & \texttt{0xc0000003} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_NEEDED} & \texttt{0xc0000004} \\
     \end{tabular}
   \end{center}
 \Hrule
@@ -418,6 +420,21 @@ The following processor-specific program property types
  \item[GNU_PROPERTY_X86_FEATURE_1_AND] Its \code{pr_data} field contains
    a 4-byte integer.  A bit in the output \code{pr_data} field is set
    only if it is set in all relocatable input \code{pr_data} fields.
+ \item[GNU_PROPERTY_X86_FEATURE_2_USED] Its \code{pr_data} field contains
+   a 4-byte integer.  The x86 processor features indicated by the
+   corresponding bits are used in program.  Their support in the
+   hardware is optional.  Its absence in an x86 ELF binary implies that
+   any x86 processor features may be used.  If a bit in the \code{pr_data}
+   field is unset, the corresponding processor feature isn't used.
+   A bit in the output \code{pr_data} field is set if  it is set in
+   any relocatable input \code{pr_data} fields and
+   \texttt{GNU_PROPERTY_X86_FEATURE_2_USED} is present in all relocatable
+   input files.
+ \item[GNU_PROPERTY_X86_FEATURE_2_NEEDED] Its \code{pr_data} field
+   contains a 4-byte integer.  The x86 processor features indicated by
+   the corresponding bits are used in program and they must be supported
+   by the hardware.  A bit in the output \code{pr_data} field is
+   set if it is set in any relocatable input \code{pr_data} fields.
 \end{description}
 
 \begin{table}[H]
@@ -486,6 +503,26 @@ The following bits are defined for \code{GNU_PROPERTY_X86_FEATURE_1_AND}:
    where return address popped from shadow stack always matches return
    address popped from normal stack.
 \end{description}
+
+\begin{table}[H]
+\Hrule
+  \caption{Bit Flags For X86 Processor Features}
+  \begin{center}
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_X86} $^\dagger$ & \texttt{1U << 0} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_X87} & \texttt{1U << 1} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_MMX} & \texttt{1U << 2} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_XMM} & \texttt{1U << 3} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_YMM} & \texttt{1U << 4} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_ZMM} & \texttt{1U << 5} \\
+    \cline{1-2}
+    \multicolumn{2}{p{13cm}}{\small $^\dagger$ This bit should always
+    be set when \texttt{GNU_PROPERTY_X86_FEATURE_2_USED} is used.}\\
+    \end{tabular}
+  \end{center}
+\end{table}
 
 %%% Local Variables:
 %%% mode: latex
